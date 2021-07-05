@@ -1,0 +1,73 @@
+{
+    "employee-payroll": [
+      {
+        "_name": "Shruti",
+        "_gender": "Female",
+        "_profilePicture": "../assets/profile-images/Ellipse -7.png",
+        "_salary": "750000",
+        "_startDate": "2018-10-29T18:30:00.000Z",
+        "_note": "First Employee",
+        "_departments": [
+          "HR",
+          "Sales",
+          "Finance",
+          "Engineer",
+          "Others"
+        ],
+        "id": 1
+      },
+      {
+        "_name": "Arpit Verma",
+        "_gender": "Male",
+        "_profilePicture": "../assets/profile-images/Ellipse -5.png",
+        "_salary": "300000",
+        "_startDate": "2019-08-03T18:30:00.000Z",
+        "_note": "Second Employee",
+        "_departments": [
+          "HR"
+        ],
+        "id": 2
+      },
+      {
+        "_name": "Sneha",
+        "_gender": "Female",
+        "_profilePicture": "../assets/profile-images/Ellipse -4.png",
+        "_salary": "500000",
+        "_startDate": "2019-06-23T18:30:00.000Z",
+        "_note": "Third Employee",
+        "_departments": [
+          "Sales",
+          "Finance"
+        ],
+        "id": 3
+      },
+      {
+        "id": 4,
+        "_name": "Satyam",
+        "_gender": "Male",
+        "_profilePicture": "../assets/profile-images/Ellipse -5.png",
+        "_salary": "400000",
+        "_startDate": "2020-09-11T18:30:00.000Z",
+        "_note": "Fourth Employee",
+        "_departments": [
+          "HR",
+          "Sales",
+          "Engineer",
+          "Others"
+        ]
+      },
+      {
+        "_name": "Vidit Pandey",
+        "_gender": "Male",
+        "_profilePicture": "../assets/profile-images/Ellipse -3.png",
+        "_salary": "550000",
+        "_startDate": "2019-04-15T18:30:00.000Z",
+        "_note": "Fifth employee",
+        "_departments": [
+          "Sales",
+          "Finance"
+        ],
+        "id": 5
+      }
+    ]
+  }
