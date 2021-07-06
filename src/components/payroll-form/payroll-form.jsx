@@ -8,6 +8,7 @@ import profile6 from '../../assets/profile-images/Ellipse -1.png';
 import './payroll-form.css';
 import logo from '../../assets/images/logo.png';
 import { userParams, Link, withRouter } from 'react-router-dom';
+import EmployeeService from '../../services/employee-service';
 
 const initialState = {
   name: '',
@@ -19,7 +20,7 @@ const initialState = {
   month: 'Jan',
   year: '2020',
   startDate: new Date("1 Jan 2020"),
-  notes: '',
+  note: '',
 
   id: '',      
   isUpdate: false,
@@ -53,7 +54,7 @@ class PayrollForm extends React.Component {
       month: 'Jan',
       year: '2020',
       startDate: new Date("1 Jan 2020"),
-      notes: '',
+      note: '',
 
       id: '',      
       isUpdate: false,
@@ -82,7 +83,7 @@ class PayrollForm extends React.Component {
     this.dayChangeHandler = this.dayChangeHandler.bind(this);
     this.monthChangeHandler = this.monthChangeHandler.bind(this);
     this.yearChangeHandler = this.yearChangeHandler.bind(this);
-    this.notesChangeHandler = this.notesChangeHandler.bind(this);
+    this.noteChangeHandler = this.noteChangeHandler.bind(this);
   }
 
   nameChangeHandler = (event) => {
@@ -129,8 +130,8 @@ class PayrollForm extends React.Component {
     this.setState({year: event.target.value});
     this.setStartDate(this.state.day, this.state.month, event.target.value);
   }
-  notesChangeHandler = (event) => {
-    this.setState({notes: event.target.value});
+  noteChangeHandler = (event) => {
+    this.setState({note: event.target.value});
   }
   
   setStartDate = (day, month, year) => {
@@ -179,8 +180,7 @@ class PayrollForm extends React.Component {
       this.initializeMessage('startDate', 'Start Date is a Futute Date!', '');
     // } else if (difference / (1000 * 60 * 60 * 24) > 30) {
     //     this.initializeMessage('startDate', 'Start Date is beyond 30 days!', '');
-    // 
-  } else {
+    } else {
       this.initializeMessage('startDate', '', '✓');
     }
   }
@@ -225,7 +225,22 @@ class PayrollForm extends React.Component {
         alert("Error Occured while Submitting the Form ==> ERROR LOG : " + errorLog);
         break saveOperation;
       }
-      alert("Form Submitted Successfully!!!\n"+`${this.state.name} ${this.state.gender} ${this.state.profilePicture} ${this.state.departments} ${this.state.salary} ${this.state.startDate} ${this.state.notes}`);
+      let employeeObject = {
+        id: this.state.id,
+        name: this.state.name,
+        profilePicture: this.state.profilePicture,
+        gender: this.state.gender,
+        departments: this.state.departments,
+        salary: this.state.salary,
+        startDate: this.state.startDate,
+        note: this.state.note
+      }
+      new EmployeeService().addEmployee(employeeObject)
+      .then(data => {
+        alert("Employee Added Successfully!!!\n" + JSON.stringify(data))
+      }).catch(error => {
+        console.log("Error while adding Employee!!!\nError : " + error);
+      })
       this.reset();
     }
   }
@@ -389,6 +404,7 @@ class PayrollForm extends React.Component {
                   <option value="Dec">December</option>
                 </select>
                 <select onChange={this.yearChangeHandler} value={this.state.year} id="year" name="year">
+                <option value="2021">2021</option>
                   <option value="2020">2020</option>
                   <option value="2019">2019</option>
                   <option value="2018">2018</option>
@@ -400,8 +416,8 @@ class PayrollForm extends React.Component {
               <error-output className="startDate-error" htmlFor="startDate">{this.state.error.startDate}</error-output>
             </div>
             <div className="row-content">
-              <label className="label text" htmlFor="notes">Notes</label>
-              <textarea className="input" onChange={this.notesChangeHandler} value={this.state.notes} id="notes" name="notes" placeholder="Write a note..." style={{height:'100px'}}></textarea>
+              <label className="label text" htmlFor="note">Notes</label>
+              <textarea className="input" onChange={this.noteChangeHandler} value={this.state.note} id="note" name="note" placeholder="Write a note..." style={{height:'100px'}}></textarea>
             </div>
             <div className="buttonParent">
               <Link to='' className="resetButton button cancelButton">Cancel</Link>
