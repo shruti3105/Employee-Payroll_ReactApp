@@ -1,5 +1,6 @@
 import React from 'react';
 import './display.css';
+import EmployeeService from '../../services/employee-service';
 import deleteIcon from '../../assets/icons/delete-black-18dp.svg';
 import UtilityService from '../../services/utility-service';
 import editIcon from '../../assets/icons/create-black-18dp.svg';
@@ -17,7 +18,19 @@ const Display = (props) => {
   const edit = (id) => {
     props.history.push(`/payroll-form/${id}`);
   }
-  
+  const remove = (id) => {
+    var deleteChoice = window.confirm("Employee will be deleted permanently!!!\nDo you wish to continue ?");
+    if(deleteChoice) {
+      new EmployeeService().deleteEmployee(id)
+      .then(responseText => {
+        alert("Employee deleted successfully!!!");
+        window.location.reload();
+      }).catch(error => {
+        alert("Error occurred while deleting the Employee!!!");
+        console("Delete Error : " + JSON.stringify(error));
+      })
+    } 
+  }
   return (
     <table id="display" className="table">
       <tbody>
@@ -48,8 +61,6 @@ const Display = (props) => {
         </tbody>
     </table>
   )
-}
-const remove = (id) => {
 }
 
 const profiles = ["../../assets/profile-images/Ellipse -3.png", "../../assets/profile-images/Ellipse -4.png",

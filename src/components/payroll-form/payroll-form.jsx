@@ -362,11 +362,11 @@ class PayrollForm extends React.Component {
               <label className="label text" htmlFor="gender">Gender</label>
               <div>
                 <label>
-                  <input type="radio" id="male" checked={this.state.gender === 'male'} onChange={this.genderChangeHandler} name="gender" value="male"  />
+                  <input type="radio" id="male" checked={this.state.gender === 'male'} onChange={this.genderChangeHandler} name="gender" value="Male"  />
                   <label className="text" htmlFor="male">Male</label>
                 </label>
                 <label>
-                  <input type="radio" id="female" checked={this.state.gender === 'female'} onChange={this.genderChangeHandler} name="gender" value="female"  />
+                  <input type="radio" id="female" checked={this.state.gender === 'female'} onChange={this.genderChangeHandler} name="gender" value="Female"  />
                   <label className="text" htmlFor="female">Female</label>
                 </label>
               </div>
