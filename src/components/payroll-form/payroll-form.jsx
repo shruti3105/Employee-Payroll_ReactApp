@@ -178,8 +178,8 @@ class PayrollForm extends React.Component {
     let difference = Math.abs(now.getTime() - startDateValue.getTime());
     if (startDateValue > now) {
       this.initializeMessage('startDate', 'Start Date is a Futute Date!', '');
-    // } else if (difference / (1000 * 60 * 60 * 24) > 30) {
-    //     this.initializeMessage('startDate', 'Start Date is beyond 30 days!', '');
+    } else if (difference / (1000 * 60 * 60 * 24) > 30) {
+        this.initializeMessage('startDate', 'Start Date is beyond 30 days!', '');
     } else {
       this.initializeMessage('startDate', '', '✓');
     }
@@ -236,10 +236,10 @@ class PayrollForm extends React.Component {
         note: this.state.note
       }
       new EmployeeService().addEmployee(employeeObject)
-      .then(data => {
-        alert("Employee Added Successfully!!!\n")
+      .then(responseText => {
+        alert("Employee Added Successfully!!!\n" + JSON.stringify(responseText.data));
       }).catch(error => {
-        console.log("Error while adding Employee!!!\n");
+        console.log("Error while adding Employee!!!\n" + JSON.stringify(error));
       })
       this.reset();
     }
