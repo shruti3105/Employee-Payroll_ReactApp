@@ -1,15 +1,19 @@
 import config from "../config/config";
-import AxiosService from "../services/axios-service.js";
+import AxiosService from "./axios-service";
+
+const URL = config.baseUrl;
 
 export default class EmployeeService {
-  baseUrl = config.baseUrl;
-  addEmployee(data) {
-    return AxiosService.postService(`${this.baseUrl}employee`, data);
+  addEmployee(employeeData) {
+    return AxiosService.postService(`${URL}employee-payroll`, employeeData);
   }
-  getAllEmployee() {
-    return AxiosService.getService(`${this.baseUrl}employee`);
+  getAllEmployees() {
+    return AxiosService.getService(`${URL}employee-payroll`);
   }
-  getEmployee(id) {
-    return AxiosService.getService(`${this.baseUrl}employee/${id}`);
+  getEmployeeById(id) {
+    return AxiosService.getService(`${URL}employee-payroll/${id}`);
+  }
+  updateEmployee(data) {
+    return AxiosService.putService(`${URL}employee-payroll/${data.id}`, data);
   }
 }
