@@ -6,90 +6,81 @@ import EmployeeService from "../../services/employee-service";
 import Display from "../display/display";
 import logo from "../../assets/images/logo.png";
 import { Link } from "react-router-dom";
-export default class Home extends React.Component {
+
+class HomePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchExpand: false,
+      allEmployeeArray: [],
       employeeArray: [],
-      AllEmployeeArray: [],
+      searchExpand: false
     };
-    this.employeeService = new EmployeeService();
+    this.employeeService = new EmployeeService();    
   }
   openSearch = () => {
     this.setState({ searchExpand: true });
   }
+  componentDidMount() {
+    this.getEmployeeList();
   }
 
-  getAllEmployee = () => {
-    this.employeeService
-      .getAllEmployee()
-      .then((data) => {
-        console.log("data after get ", data.data);
-        this.setState({
-          employeeArray: data.data,
-          AllEmployeeArray: data.data,
-        });
-      })
-      .catch((err) => {
-        console.log("err after ", err);
-      });
-  };
   search = async (event) => {
-    let search = event.target.value;
-    
-    await this.setState({ employeeArray: this.state.AllEmployeeArray });
-    let empArray = this.state.employeeArray;
-    if (search.trim().length > 0)
-      empArray = empArray.filter(
-        (element) =>
-          element.name.toLowerCase().indexOf(search.toLowerCase()) > -1
-      );
-    
-    this.setState({ employeeArray: empArray });
-  };
+    let searchName = event.target.value;
+    await this.setState({employeeArray: this.state.allEmployeeArray});
+    let employeeList = this.state.employeeArray;
+    if (searchName.trim().length > 0)
+    employeeList = employeeList.filter((employee) => 
+          employee.name.toLowerCase().indexOf(searchName.toLowerCase()) > -1 );
+    this.setState({ employeeArray: employeeList });
+  }
 
-  render() {
+  getEmployeeList = () => {
+    this.employeeService.getAllEmployees()
+    .then(responseData => {
+      console.log("Data received after GET Call :\n" + responseData.data);
+      this.setState({allEmployeeArray: responseData.data});
+      this.setState({employeeArray: responseData.data});
+    }).catch(errror => {
+      console.log("Error while fetching Employee List\nError : " + JSON.stringify(errror));
+    })
+  }
+
+  render () {
     return (
-      <div>
-        <header className='header row center'>
-                <div className="logo">
-                    <img src={logo} alt="" />
-                    <div>
-                        <span className="emp-text">EMPLOYEE</span> <br />
-                        <span className="emp-text emp-payroll">PAYROLL</span>
+      <div className="body">
+        <header className="header-content header">
+            <div className="logo-content">
+                <img className = "logo-content-img" src={logo} alt="Logo" />
+                <div>
+                    <span className="emp-text">EMPLOYEE</span><br />
+                    <span className="emp-text emp-payroll">PAYROLL</span>
+                </div>
+            </div>
+        </header>
+        <div className="main-content">
+            <div className="header-content">
+                <div className="heading">
+                    Employee Details
+                    <div className="emp-count">
+                        {this.state.employeeArray.length}
                     </div>
                 </div>
-            </header>
-        <div className="column content">
-        <div className="emp-detail">
-            <div className="detail-text">
-              Employee Details <div className="count"></div>
+                <div className="search-box" onClick={this.openSearch}>
+                  <input className={"search-input " + (this.state.searchExpand && "input-expand")}
+                    onChange={this.search} type="text" placeholder="" />
+                  <img className="search-icon" src={searchIcon} alt="Search Icon" />
+                </div>
+                <Link to="payroll-form" className="add-button">
+                  <img src={addIcon} alt="Add Button" /> Add User
+                </Link>
             </div>
-            
-              <div className="search-box" onClick={this.openSearch}>
-                <input
-                  className={
-                    "input " + (this.state.searchExpand && "input-expand")
-                  }
-                  onChange={this.search}
-                  type="text"
-                  placeholder=""
-                />
-                <img className="search-icon" src={searchIcon} alt="" />
-              </div>
-              <Link to="payroll-form" className="add-button" >
-                <img src={addIcon} alt="" /> Add User
-              </Link>
-              </div>
-          <div className="table-main">
-            <Display
-              employeeArray={this.state.employeeArray}
-              getAllEmployee={this.getAllEmployee}
-            />
-          </div>
+            <div className="table-main">
+                <Display employeeArray = {this.state.employeeArray} />
+            </div>
         </div>
       </div>
     );
   }
 }
+
+export default HomePage;
