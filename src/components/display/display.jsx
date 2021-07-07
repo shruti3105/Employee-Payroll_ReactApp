@@ -1,7 +1,8 @@
 import React from 'react';
 import './display.css';
-import deleteIcon from '../../assets/icons/delete-black-18dp.svg';
 import UtilityService from '../../services/utility-service';
+import EmployeeService from '../../services/employee-service';
+import deleteIcon from '../../assets/icons/delete-black-18dp.svg';
 import editIcon from '../../assets/icons/create-black-18dp.svg';
 import profile1 from '../../assets/profile-images/Ellipse -3.png';
 import profile2 from '../../assets/profile-images/Ellipse -4.png';
@@ -11,17 +12,27 @@ import profile5 from '../../assets/profile-images/Ellipse -2.png';
 import profile6 from '../../assets/profile-images/Ellipse -1.png';
 import {withRouter} from 'react-router-dom';
 
-
 const Display = (props) => {
 
   const edit = (id) => {
     props.history.push(`/payroll-form/${id}`);
   }
-  
+  const remove = (id) => {
+    var deleteChoice = window.confirm("Employee will be deleted permanently!!!\nDo you wish to continue ?");
+    if(deleteChoice) {
+      new EmployeeService().deleteEmployee(id)
+      .then(responseText => {
+        alert("Employee deleted successfully!!!");
+        window.location.reload();
+      }).catch(error => {
+        alert("Error occurred while deleting the Employee!!!");
+        console("Delete Error : " + JSON.stringify(error));
+      })
+    } 
+  }
   return (
     <table id="display" className="table">
-      <tbody>
-        
+      <tbody>        
         <tr key={-1}>
             <th></th>
             <th>Name</th>
@@ -32,8 +43,8 @@ const Display = (props) => {
             <th>Actions</th>
         </tr>
         {
-            props.employeeArray && props.employeeArray.map((employee) => (
-              <tr key={employee.id}>
+            props.employeeArray && props.employeeArray.map((employee, ind) => (
+              <tr key={ind}>
                   <td><img src={handleProfilePicture(employee.profilePicture)} alt="" /></td>
                   <td>{employee.name}</td>
                   <td>{employee.gender}</td>
@@ -48,8 +59,6 @@ const Display = (props) => {
         </tbody>
     </table>
   )
-}
-const remove = (id) => {
 }
 
 const profiles = ["../../assets/profile-images/Ellipse -3.png", "../../assets/profile-images/Ellipse -4.png",
